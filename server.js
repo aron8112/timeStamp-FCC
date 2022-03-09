@@ -37,6 +37,9 @@ app.get('/api/:date', (req, res) => {
     
     // parametro ingresado en req
     const date = req.params.date;
+    // parametro para satisfacer la opcion  
+    // new Date(date_string)=> resultado en formato: 2011-10-05T00:00:00.000Z
+    const date0 = new Date(date);
     // etapas para conversion de fecha YY-MM-DD a formato UTC
     const time = new Date(date).toString();
     const utcTime = new Date(time).toUTCString();
@@ -62,6 +65,12 @@ app.get('/api/:date', (req, res) => {
         })
     } else if (/^\d{4}.\d{2}.\d{2}$/.test(date)) {
        // se ingresa una fecha de formato YY-MM-DD
+        res.send({
+          unix: unixTime,
+          utc: utcTime
+        })
+      } else if (/\d{4}.\d{2}.0[0-9]\w[0-9]{2}.\d{2}.\d{2}.\d{3}[A-Z]/.test(date0)) {
+        //fecha formato new Date(date_string)
         res.send({
           unix: unixTime,
           utc: utcTime
