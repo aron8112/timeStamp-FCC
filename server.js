@@ -37,14 +37,14 @@ app.get('/api/:date', (req, res) => {
     
     // parametro ingresado en req
     const date = req.params.date;
-    // etapas para conversion de fecha YY/MM/DD a formato UTC
+    // etapas para conversion de fecha YY-MM-DD a formato UTC
     const time = new Date(date).toString();
     const utcTime = new Date(time).toUTCString();
-    // formato fecha YY/MM/DD a UNIX
+    // formato fecha YY-MM-DD a UNIX
     // no se usaron las opciones .parse o getTime
     const unixTime = new Date(date).valueOf();
     // formato UNIX a fecha (1)
-    const convertion = fromUnixTime(date).toString();
+    const convertion = fromUnixTime(date/1000).toString();
     // formato fecha a UTC (2)
     const utcFinale = new Date(convertion).toUTCString()
     // registro de variables
@@ -61,7 +61,7 @@ app.get('/api/:date', (req, res) => {
           utc: utcFinale
         })
     } else if (/^\d{4}.\d{2}.\d{2}$/.test(date)) {
-       // se ingresa una fecha de formato YY/MM/DD
+       // se ingresa una fecha de formato YY-MM-DD
         res.send({
           unix: unixTime,
           utc: utcTime
